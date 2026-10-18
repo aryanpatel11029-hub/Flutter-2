@@ -6,6 +6,7 @@ import 'sell_book_page.dart';
 import 'cart_page.dart';
 import 'saler_profile_page.dart';
 import 'view_all_page.dart';
+import 'wishlist_page.dart';
 
 class BookItem {
   final String title;
@@ -507,24 +508,63 @@ class _UserHomePageState extends State<UserHomePage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 8),
-              // Greeting Header
+              // Greeting Header with Wishlist Button
               Row(
-                children: const [
-                  Text(
-                    'Hello, Aryan ',
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: const [
+                          Text(
+                            'Hello, Aryan ',
+                            style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
+                          ),
+                          Text('👋', style: TextStyle(fontSize: 22)),
+                        ],
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        'Find your next favorite read today',
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.grey.shade600,
+                        ),
+                      ),
+                    ],
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const WishlistPage(),
+                        ),
+                      );
+                    },
+                    child: Container(
+                      width: 44,
+                      height: 44,
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFF8F6FD),
+                        shape: BoxShape.circle,
+                        border: Border.all(color: Colors.grey.shade200),
+                      ),
+                      child: const Center(
+                        child: Icon(
+                          Icons.favorite_rounded,
+                          color: Color(0xFFEF4444),
+                          size: 22,
+                        ),
+                      ),
                     ),
                   ),
-                  Text('👋', style: TextStyle(fontSize: 22)),
                 ],
-              ),
-              const SizedBox(height: 4),
-              Text(
-                'Find your next favorite read today',
-                style: TextStyle(fontSize: 14, color: Colors.grey.shade600),
               ),
               const SizedBox(height: 18),
 

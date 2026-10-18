@@ -12,6 +12,8 @@ import 'User/saler_profile_page.dart';
 import 'User/sell_book_page.dart';
 import 'User/cart_page.dart';
 import 'User/view_all_page.dart';
+import 'User/wishlist_page.dart';
+import 'User/checkout_page.dart';
 import 'Guset_user/forgot_password_page.dart';
 import 'Guset_user/forgot_password_otp_page.dart';
 import 'Guset_user/reset_password_page.dart';
@@ -50,6 +52,8 @@ class BookApp extends StatelessWidget {
         '/sell-book': (context) => const SellBookPage(),
         '/cart': (context) => const CartPage(),
         '/view-all': (context) => const ViewAllPage(),
+        '/wishlist': (context) => const WishlistPage(),
+        '/checkout': (context) => const CheckoutPage(),
       },
     );
   }
