@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'Guset_user/welcome_page.dart';
 import 'Guset_user/login_page.dart';
 import 'Guset_user/register_page.dart';
@@ -8,6 +9,9 @@ import 'User/home.dart';
 import 'User/search_page.dart';
 import 'User/book_detail_page.dart';
 import 'User/saler_profile_page.dart';
+import 'User/sell_book_page.dart';
+import 'User/cart_page.dart';
+import 'User/view_all_page.dart';
 import 'Guset_user/forgot_password_page.dart';
 import 'Guset_user/forgot_password_otp_page.dart';
 import 'Guset_user/reset_password_page.dart';
@@ -43,6 +47,9 @@ class BookApp extends StatelessWidget {
         '/book-details': (context) => const BookDetailPage(),
         '/saler-profile': (context) => const SalerProfilePage(),
         '/seller-profile': (context) => const SalerProfilePage(),
+        '/sell-book': (context) => const SellBookPage(),
+        '/cart': (context) => const CartPage(),
+        '/view-all': (context) => const ViewAllPage(),
       },
     );
   }

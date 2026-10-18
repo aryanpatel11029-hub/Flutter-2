@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'saler_profile_page.dart';
+import 'cart_page.dart';
 
 class BookDetailPage extends StatefulWidget {
   final String title;
@@ -586,10 +587,9 @@ class _BookDetailPageState extends State<BookDetailPage> {
                     ),
                   ),
                   onPressed: () {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text('Proceeding to buy ${data['title']} for ${data['price']}!'),
-                      ),
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const CartPage()),
                     );
                   },
                   child: Text(
