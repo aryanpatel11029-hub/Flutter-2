@@ -14,9 +14,24 @@ import 'User/cart_page.dart';
 import 'User/view_all_page.dart';
 import 'User/wishlist_page.dart';
 import 'User/checkout_page.dart';
+import 'User/order_status_page.dart';
+import 'User/my_orders_page.dart';
+import 'User/transaction_history_page.dart';
+import 'User/my_listings_page.dart';
+import 'User/profile_page.dart';
+import 'User/edit_profile_page.dart';
+import 'User/settings_page.dart';
 import 'Guset_user/forgot_password_page.dart';
 import 'Guset_user/forgot_password_otp_page.dart';
 import 'Guset_user/reset_password_page.dart';
+import 'Admin/admin_main_screen.dart';
+import 'Admin/admin_login_page.dart';
+import 'Admin/admin_books_page.dart';
+import 'Admin/admin_orders_page.dart';
+import 'Admin/admin_users_page.dart';
+import 'Admin/admin_categories_page.dart';
+import 'Admin/admin_reports_page.dart';
+import 'Admin/admin_settings_page.dart';
 
 void main() {
   runApp(const BookApp());
@@ -54,6 +69,21 @@ class BookApp extends StatelessWidget {
         '/view-all': (context) => const ViewAllPage(),
         '/wishlist': (context) => const WishlistPage(),
         '/checkout': (context) => const CheckoutPage(),
+        '/order-status': (context) => const OrderStatusPage(),
+        '/my-orders': (context) => const MyOrdersPage(),
+        '/transaction-history': (context) => const TransactionHistoryPage(),
+        '/my-listings': (context) => const MyListingsPage(),
+        '/profile': (context) => const ProfilePage(),
+        '/edit-profile': (context) => const EditProfilePage(),
+        '/settings': (context) => const SettingsPage(),
+        '/admin': (context) => const AdminMainScreen(),
+        '/admin-login': (context) => const AdminLoginPage(),
+        '/admin-books': (context) => const AdminBooksPage(),
+        '/admin-orders': (context) => const AdminOrdersPage(),
+        '/admin-users': (context) => const AdminUsersPage(),
+        '/admin-categories': (context) => const AdminCategoriesPage(),
+        '/admin-reports': (context) => const AdminReportsPage(),
+        '/admin-settings': (context) => const AdminSettingsPage(),
       },
     );
   }

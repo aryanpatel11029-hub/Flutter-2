@@ -150,6 +150,25 @@ class WelcomePage extends StatelessWidget {
                               ),
                             ),
                           ),
+                          const SizedBox(height: 6),
+                          TextButton.icon(
+                            onPressed: () {
+                              Navigator.pushNamed(context, '/admin');
+                            },
+                            icon: const Icon(
+                              Icons.admin_panel_settings_rounded,
+                              size: 18,
+                              color: Color(0xFF4F39E3),
+                            ),
+                            label: const Text(
+                              'Open Admin Portal',
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                                color: Color(0xFF4F39E3),
+                              ),
+                            ),
+                          ),
                         ],
                       ),
                     ),

@@ -7,6 +7,7 @@ import 'cart_page.dart';
 import 'saler_profile_page.dart';
 import 'view_all_page.dart';
 import 'wishlist_page.dart';
+import 'profile_page.dart';
 
 class BookItem {
   final String title;
@@ -948,7 +949,7 @@ class _UserHomePageState extends State<UserHomePage> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const SalerProfilePage(),
+              builder: (context) => const ProfilePage(),
             ),
           );
         } else {
