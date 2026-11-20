@@ -1,5 +1,8 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 
+import '../../../shared/services/firestore_service.dart';
+import '../../../shared/models/book_model.dart';
 import 'book_detail_page.dart';
 import 'cart_page.dart';
 import 'seller_profile_page.dart';
@@ -45,8 +48,9 @@ class _SearchPageState extends State<SearchPage> {
     'More',
   ];
 
-  late final List<SearchBookItem> _allBooks;
+  List<SearchBookItem> _allBooks = [];
   List<SearchBookItem> _filteredBooks = [];
+  StreamSubscription<List<BookModel>>? _searchSubscription;
 
   @override
   void initState() {
@@ -126,10 +130,28 @@ class _SearchPageState extends State<SearchPage> {
       ),
     ];
     _filteredBooks = List.from(_allBooks);
+
+    _searchSubscription = FirestoreService().streamBooks().listen((remoteBooks) {
+      if (!mounted || remoteBooks.isEmpty) return;
+      setState(() {
+        _allBooks = remoteBooks.map((b) => SearchBookItem(
+          title: b.title,
+          author: b.author,
+          price: '₹${b.price.toInt()}',
+          rating: b.rating,
+          imagePath: b.imagePath,
+          category: b.category,
+        )).toList();
+        _filterBooks();
+      });
+    }, onError: (e) {
+      debugPrint('Search streamBooks note: $e');
+    });
   }
 
   @override
   void dispose() {
+    _searchSubscription?.cancel();
     _searchController.dispose();
     super.dispose();
   }
@@ -534,16 +556,25 @@ class _SearchPageState extends State<SearchPage> {
             child: SizedBox(
               width: 70,
               height: 96,
-              child: Image.asset(
-                book.imagePath,
-                fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) {
-                  return Container(
-                    color: Colors.grey.shade200,
-                    child: const Icon(Icons.book, color: Colors.grey),
-                  );
-                },
-              ),
+              child: book.imagePath.startsWith('http')
+                  ? Image.network(
+                      book.imagePath,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) => Container(
+                        color: Colors.grey.shade200,
+                        child: const Icon(Icons.book, color: Colors.grey),
+                      ),
+                    )
+                  : Image.asset(
+                      book.imagePath,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) {
+                        return Container(
+                          color: Colors.grey.shade200,
+                          child: const Icon(Icons.book, color: Colors.grey),
+                        );
+                      },
+                    ),
             ),
           ),
           const SizedBox(width: 16),

@@ -1,5 +1,8 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 
+import '../../../shared/services/firestore_service.dart';
+import '../../../shared/models/book_model.dart';
 import 'search_page.dart';
 import 'book_detail_page.dart';
 import 'sell_book_page.dart';
@@ -9,6 +12,7 @@ import 'wishlist_page.dart';
 import 'profile_page.dart';
 
 class BookItem {
+  final String id;
   final String title;
   final String author;
   final String price;
@@ -22,6 +26,7 @@ class BookItem {
   bool isFavorite;
 
   BookItem({
+    this.id = '',
     required this.title,
     required this.author,
     required this.price,
@@ -54,8 +59,9 @@ class _UserHomePageState extends State<UserHomePage> {
     'Comics',
   ];
 
-  late final List<BookItem> _recommendedBooks;
-  late final List<BookItem> _exploreMoreBooks;
+  List<BookItem> _recommendedBooks = [];
+  List<BookItem> _exploreMoreBooks = [];
+  StreamSubscription<List<BookModel>>? _booksSubscription;
 
   @override
   void initState() {
@@ -245,6 +251,69 @@ class _UserHomePageState extends State<UserHomePage> {
         isFavorite: false,
       ),
     ];
+
+    // Real-time Firestore live listener
+    _booksSubscription = FirestoreService().streamBooks().listen((remoteBooks) {
+      if (!mounted || remoteBooks.isEmpty) return;
+      setState(() {
+        final mapped = remoteBooks.map((b) => BookItem(
+          id: b.id,
+          title: b.title,
+          author: b.author,
+          price: '₹${b.price.toInt()}',
+          originalPrice: '₹${b.originalPrice.toInt()}',
+          condition: b.condition,
+          rating: b.rating,
+          soldCount: b.soldCount,
+          imagePath: b.imagePath,
+          category: b.category,
+        )).toList();
+
+        if (mapped.length <= 4) {
+          _recommendedBooks = mapped;
+        } else {
+          final half = (mapped.length / 2).ceil();
+          _recommendedBooks = mapped.sublist(0, half);
+          _exploreMoreBooks = mapped.sublist(half);
+        }
+      });
+    }, onError: (e) {
+      debugPrint('Home streamBooks note: $e');
+    });
+  }
+
+  @override
+  void dispose() {
+    _booksSubscription?.cancel();
+    super.dispose();
+  }
+
+  Widget _buildBookCover(String path) {
+    if (path.startsWith('http://') || path.startsWith('https://')) {
+      return Image.network(
+        path,
+        fit: BoxFit.cover,
+        errorBuilder: (context, error, stackTrace) => _fallbackCoverIcon(),
+      );
+    }
+    return Image.asset(
+      path,
+      fit: BoxFit.cover,
+      errorBuilder: (context, error, stackTrace) => _fallbackCoverIcon(),
+    );
+  }
+
+  Widget _fallbackCoverIcon() {
+    return Container(
+      color: Colors.grey.shade200,
+      child: const Center(
+        child: Icon(
+          Icons.menu_book,
+          color: Colors.grey,
+          size: 40,
+        ),
+      ),
+    );
   }
 
   Widget _buildBookCard(BookItem book) {
@@ -278,22 +347,7 @@ class _UserHomePageState extends State<UserHomePage> {
               children: [
                 AspectRatio(
                   aspectRatio: 0.82,
-                  child: Image.asset(
-                    book.imagePath,
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) {
-                      return Container(
-                        color: Colors.grey.shade200,
-                        child: const Center(
-                          child: Icon(
-                            Icons.menu_book,
-                            color: Colors.grey,
-                            size: 40,
-                          ),
-                        ),
-                      );
-                    },
-                  ),
+                  child: _buildBookCover(book.imagePath),
                 ),
                 // Condition Badge (Top-Left)
                 Positioned(
